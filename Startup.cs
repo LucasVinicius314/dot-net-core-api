@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +18,13 @@ namespace DotNetCoreApi
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+      {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+      }));
+
       services.AddControllers();
     }
 
@@ -29,6 +35,16 @@ namespace DotNetCoreApi
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.Use(async (context, nextMiddleware) =>
+        {
+          context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+          context.Response.Headers.Add("Access-Control-Allow-Methods", "*");
+          context.Response.Headers.Add("Access-Control-Allow-Headers", "*");
+          context.Response.Headers.Add("Access-Control-Max-Age", "86400");
+
+          await nextMiddleware();
+        });
 
       app.UseHttpsRedirection();
 
