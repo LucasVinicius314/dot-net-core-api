@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,19 +14,23 @@ namespace DotNetCoreApi.Controllers
     public Dictionary<string, dynamic> All()
     {
       return new Dictionary<string, dynamic>{
-        {"data", Post.All()},
+        {"data", MainContext.Instance.Posts},
       };
     }
 
     [HttpPost]
     public Dictionary<string, dynamic> Create()
     {
-      DotNetCoreApi.Post.Create(new DotNetCoreApi.Post
+      var context = MainContext.Instance;
+
+      context.Posts.Add(new DotNetCoreApi.Post
       {
         Description = Request.Form["description"],
         Title = Request.Form["title"],
-        User_id = int.Parse(Request.Form["user_id"]),
+        UserId = int.Parse(Request.Form["user_id"]),
       });
+
+      context.SaveChanges();
 
       return new Dictionary<string, dynamic>{
         {"message", "Post created"},
@@ -35,7 +41,7 @@ namespace DotNetCoreApi.Controllers
     public Dictionary<string, dynamic> Read(int id)
     {
       return new Dictionary<string, dynamic>{
-        {"data", Post.Read(id)},
+        {"data", MainContext.Instance.Posts.Find(id)},
       };
     }
   }

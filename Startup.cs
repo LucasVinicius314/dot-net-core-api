@@ -56,7 +56,7 @@ namespace DotNetCoreApi
       {
         // endpoints.MapGet("/", async context =>
         // {
-        //   await context.Response.WriteAsync("aaaa");
+        //   await context.Response.WriteAsync("");
         // });
 
         endpoints.MapControllers();
