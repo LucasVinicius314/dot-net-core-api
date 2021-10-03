@@ -44,5 +44,27 @@ namespace DotNetCoreApi.Controllers
         {"data", MainContext.Instance.Users.Find(id)},
       };
     }
+
+    [HttpPost]
+    public Dictionary<string, dynamic> Login()
+    {
+      var user = MainContext.Instance.Users.Where(user =>
+        user.Email == Request.Form["email"] && user.Password == Request.Form["password"]).First();
+
+      if (user != null)
+      {
+        Response.Headers.Add("Authorization", JwtMiddleware.generateJwtToken(user));
+        return new Dictionary<string, dynamic>{
+          {"data", user},
+        };
+      }
+      else
+      {
+        Response.StatusCode = 400;
+        return new Dictionary<string, dynamic>{
+          {"message", "Invalid login credentials"},
+        };
+      }
+    }
   }
 }

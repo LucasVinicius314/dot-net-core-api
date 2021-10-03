@@ -14,7 +14,8 @@
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JwtSecret": "dotnet532634654646456423542376895788547634985764293650156734853"
       }
     },
     "DotNetCoreApi": {
@@ -24,7 +25,8 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JwtSecret": "dotnet532634654646456423542376895788547634985764293650156734853"
       }
     }
   }
